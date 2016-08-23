@@ -9,14 +9,28 @@ export const receivePosts = (subreddit, posts) => {
 
 export function fetchPosts (subreddit) {
   return (dispatch) => {
-    return request
+    request
       .get(`http://www.reddit.com/r/${subreddit}.json`)
       .end((err, res) => {
         if (err) {
           console.error(err.message)
           return
         }
+        dispatch(clearPost())
         dispatch(receivePosts(subreddit, res.body.data.children))
       })
+  }
+}
+
+export const setSubbredit = (subreddit) => {
+  return {
+    type: 'SET_SUBREDDIT',
+    subreddit
+  }
+}
+
+const clearPost = () => {
+  return {
+    type: 'CLEAR_POST'
   }
 }

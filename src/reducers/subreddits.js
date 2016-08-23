@@ -6,6 +6,9 @@ function subreddits (state = [], action) {
         ...action.posts
       ]
 
+    case 'CLEAR_POST':
+        return []
+
     default:
       return state
   }
