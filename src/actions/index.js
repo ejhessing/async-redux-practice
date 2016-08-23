@@ -14,9 +14,11 @@ export function fetchPosts (subreddit) {
       .end((err, res) => {
         if (err) {
           console.error(err.message)
+          dispatch(error("No subreddit with this name!"))
           return
         }
         dispatch(clearPost())
+        dispatch(error(''))
         dispatch(receivePosts(subreddit, res.body.data.children))
       })
   }
@@ -29,8 +31,15 @@ export const setSubbredit = (subreddit) => {
   }
 }
 
-const clearPost = () => {
+function clearPost () {
   return {
     type: 'CLEAR_POST'
+  }
+}
+
+function error (errorMessage) {
+  return {
+    type: 'ERROR',
+    message: errorMessage
   }
 }
