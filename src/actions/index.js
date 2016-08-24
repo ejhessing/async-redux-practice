@@ -9,6 +9,7 @@ export const receivePosts = (subreddit, posts) => {
 
 export function fetchPosts (subreddit) {
   return (dispatch) => {
+    dispatch(addLoader())
     request
       .get(`http://www.reddit.com/r/${subreddit}.json`)
       .end((err, res) => {
@@ -17,10 +18,10 @@ export function fetchPosts (subreddit) {
           dispatch(error("No subreddit with this name!"))
           return
         }
-        dispatch(clearPost())
+        dispatch(removeLoader())
         dispatch(error(''))
         dispatch(receivePosts(subreddit, res.body.data.children))
-      })
+    })
   }
 }
 
@@ -41,5 +42,17 @@ function error (errorMessage) {
   return {
     type: 'ERROR',
     message: errorMessage
+  }
+}
+
+function addLoader () {
+  return {
+    type: 'ADD_LOADER'
+  }
+}
+
+function removeLoader () {
+  return {
+    type: 'REMOVE_LOADER'
   }
 }
